@@ -3,13 +3,25 @@ import numpy as np
 import cv2 as cv
 import torch.onnx
 
-model = YOLO("/Users/melo/PycharmProjects/yolov8Test/runs/detect/train3/weights/best.pt")
+model = YOLO("/Users/melo/Desktop/yolo_100/best.pt")
 
 #results = model.train(data="config.yaml", epochs=50)
 #onnxModel = model.export(format="onnx", opset=10)
 
 
-cap = cv.VideoCapture(0)
+results = model(['/Users/melo/Desktop/test image for ssd/product_824_jpg.rf.e701747c03c80df259a29c3a2f0bea05.jpg'])  # return a list of Results objects
+
+# Process results list
+for result in results:
+    boxes = result.boxes  # Boxes object for bounding box outputs
+    masks = result.masks  # Masks object for segmentation masks outputs
+    keypoints = result.keypoints  # Keypoints object for pose outputs
+    probs = result.probs  # Probs object for classification outputs
+    result.show()  # display to screen
+    result.save(filename='result.jpg')  # save to disk
+
+
+'''cap = cv.VideoCapture('/Users/melo/Desktop/test_videos/IMG_1739.MOV')
 if not cap.isOpened():
     print("Cannot open camera")
     exit()
@@ -29,4 +41,4 @@ while True:
 
 # When everything done, release the capture
 cap.release()
-cv.destroyAllWindows()
+cv.destroyAllWindows()'''
